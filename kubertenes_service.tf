@@ -1,10 +1,10 @@
 #tfsec:ignore:azure-container-logging
 resource "azurerm_kubernetes_cluster" "main" {
-  name                = "${var.environment}-${var.cluster_name}"
-  location            = data.azurerm_resource_group.rg.location
-  resource_group_name = data.azurerm_resource_group.rg.name
-  dns_prefix          = var.dns_prefix_name
-  kubernetes_version  = var.aks_version
+  name                              = "${var.environment}-${var.cluster_name}"
+  location                          = data.azurerm_resource_group.rg.location
+  resource_group_name               = data.azurerm_resource_group.rg.name
+  dns_prefix                        = var.dns_prefix_name
+  kubernetes_version                = var.aks_version
   #tfsec:ignore:azure-container-limit-authorized-ips
   private_cluster_enabled           = var.private_cluster_enabled
   sku_tier                          = var.aks_sku_tier
@@ -48,7 +48,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     # Settings for auto-scaling if enabled
     min_count = var.enable_auto_scaling ? var.auto_scaling_min_count : null
     max_count = var.enable_auto_scaling ? var.auto_scaling_max_count : null
-
+    
     dynamic "upgrade_settings" {
       for_each = var.enable_upgrade_settings ? [1] : []
       content {
@@ -60,12 +60,12 @@ resource "azurerm_kubernetes_cluster" "main" {
   }
 
   network_profile {
-    network_plugin    = var.network_plugin # Values: kubenet, azure
-    network_policy    = var.network_policy # Values: calico, azure, We can use only if network_plugin is set to azure
-    service_cidr      = var.service_cidr
-    dns_service_ip    = var.dns_service_ip
-    load_balancer_sku = var.load_balancer_sku # Values: basic, standard
-    outbound_type     = var.outbound_type     # Values: loadBalancer and userDefinedRouting. Defaults to loadBalancer. We can use only if network_plugin is set to azure
+    network_plugin     = var.network_plugin # Values: kubenet, azure
+    network_policy     = var.network_policy # Values: calico, azure, We can use only if network_plugin is set to azure
+    service_cidr       = var.service_cidr
+    dns_service_ip     = var.dns_service_ip
+    load_balancer_sku  = var.load_balancer_sku # Values: basic, standard
+    outbound_type      = var.outbound_type     # Values: loadBalancer and userDefinedRouting. Defaults to loadBalancer. We can use only if network_plugin is set to azure
   }
 
   dynamic "service_principal" {
@@ -111,11 +111,11 @@ resource "azurerm_kubernetes_cluster" "main" {
   dynamic "workload_autoscaler_profile" {
     for_each = var.enable_workload_autoscaler_profile ? [1] : []
     content {
-      keda_enabled                    = var.workload_autoscaler_keda_enabled
-      vertical_pod_autoscaler_enabled = var.workload_autoscaler_vpa_enabled
+      keda_enabled                       = var.workload_autoscaler_keda_enabled
+      vertical_pod_autoscaler_enabled    = var.workload_autoscaler_vpa_enabled
     }
   }
-
-  tags       = var.default_tags
-  depends_on = [data.azurerm_log_analytics_workspace.main]
+  
+  tags = var.default_tags
+depends_on = [ data.azurerm_log_analytics_workspace.main ]
 }
