@@ -26,9 +26,9 @@ variables:
   - name: VM_IMAGE
     value: ubuntu-latest
   - name: MODULE_NAME
-    value: "terraform-azure-kubernetes-service"
+    value: "terraform-azure-resource-group"
   - name: MODULE_DESCRIPTION
-    value: "Terraform module for azure kubernetes service"
+    value: "Terraform module for azure resource group"
 pool:
   vmImage: $(VM_IMAGE)
 stages:
