@@ -17,7 +17,7 @@ variables:
   - name: VM_IMAGE
     value: ubuntu-latest
   - name: MODULE_NAME
-    value: "terraform-azure-kubernetes-service"    
+    value: "terraform-azure-kubernetes-service"
 pool:
   vmImage: $(VM_IMAGE)
 stages:
@@ -30,6 +30,10 @@ stages:
         - checkout: self
           displayName: 'Checkout Module'
           fetchDepth: 1
+        - task: TerraformInstaller@2
+          displayName: 'Terraform Install'
+          inputs:
+            terraformVersion: 'latest'
         - task: TerraformCLI@0
           displayName: 'Terraform Init'
           inputs:
